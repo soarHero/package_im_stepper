@@ -18,12 +18,16 @@ class FixedDotPainter extends CustomPainter {
     required this.dotOffsets,
     required this.strokeBrush,
     required this.fillBrush,
+    required this.indicatorBrush,
     required this.lineConnectorBrush,
     required this.tappedAt,
+    required this.activeDotIndex,
   });
 
   /// The total number of dots to paint.
   final int dotCount;
+
+  final int activeDotIndex;
 
   /// The radius of a dot.
   final double dotRadius;
@@ -42,6 +46,7 @@ class FixedDotPainter extends CustomPainter {
 
   /// The Paint object used for drawing the dot.
   final Paint? fillBrush;
+  final Paint? indicatorBrush;
 
   /// The `Paint` object used for drawing the line connectors.
   final Paint? lineConnectorBrush;
@@ -54,7 +59,36 @@ class FixedDotPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    for (int index = 0; index < dotCount; index++) {
+    for (int index = 0; index <= activeDotIndex; index++) {
+      // Create dot painter.
+      ShapePainter fillPainter = ShapePainter(
+        canvas,
+        indicatorBrush,
+        direction,
+        dotRadius,
+        dotOffsets[index].left,
+        dotOffsets[index].top,
+        dotOffsets[index].right,
+        dotOffsets[index].bottom,
+      );
+
+      // Create border painter.
+      ShapePainter borderPainter = ShapePainter(
+        canvas,
+        strokeBrush,
+        direction,
+        dotRadius,
+        dotOffsets[index].left,
+        dotOffsets[index].top,
+        dotOffsets[index].right,
+        dotOffsets[index].bottom,
+      );
+
+      // Draw the dot and it's border.
+      fillPainter.draw(shape);
+      borderPainter.draw(shape);
+    }
+    for (int index = activeDotIndex + 1; index < dotCount; index++) {
       // Create dot painter.
       ShapePainter fillPainter = ShapePainter(
         canvas,

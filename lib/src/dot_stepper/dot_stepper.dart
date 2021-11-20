@@ -151,11 +151,13 @@ class _DotStepperState extends State<DotStepper>
         CustomPaint(
           painter: FixedDotPainter(
             dotCount: widget.dotCount,
+            activeDotIndex: _activeDotIndex!,
             dotRadius: widget.dotRadius,
             dotOffsets: _buildDotOffsets,
             direction: widget.direction,
             shape: widget.shape,
             fillBrush: _fixedDotFillBrush,
+            indicatorBrush: _indicatorBrush,
             strokeBrush: _fixedDotStrokeBrush,
             lineConnectorBrush: _lineConnectorBrush,
             lineConnectorsEnabled: widget.lineConnectorsEnabled,
