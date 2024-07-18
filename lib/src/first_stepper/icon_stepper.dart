@@ -55,6 +55,9 @@ class IconStepper extends StatelessWidget {
   /// The radius of a step.
   final double stepRadius;
 
+  //if Complete function call
+  final Function? stepsCompletedStatusMap;
+
   /// The animation effect to show when a step is reached.
   final Curve stepReachedAnimationEffect;
 
@@ -73,8 +76,34 @@ class IconStepper extends StatelessWidget {
   /// Specifies the alignment of IconStepper widget.
   final AlignmentGeometry alignment;
 
+  //completed Stepper color
+  final Color? stepCompletedColor;
+
+  //Animate Selected Stepper in middle
+  final bool? stepperAnimateInMiddle;
+
+  // completed Map
+  final Map<String, int>? completedTasks;
+
+  //Enable Text
+  final bool enableText;
+
+  //Text Style
+  final TextStyle? textStyle;
+
+  //text for icons
+  final List<String>? texts;
+
+  //Space between Icon and Text
+  final double iconAndTextSpacing;
+
   /// Creates an IconStepper widget.
-  IconStepper({
+  const IconStepper({
+    super.key,
+    this.completedTasks,
+    this.stepperAnimateInMiddle,
+    this.stepsCompletedStatusMap,
+    this.stepCompletedColor,
     this.icons,
     this.enableNextPreviousButtons = true,
     this.enableStepTapping = true,
@@ -98,12 +127,18 @@ class IconStepper extends StatelessWidget {
     this.scrollingDisabled = false,
     this.activeStep = 0,
     this.alignment = Alignment.center,
+    this.enableText = false,
+    this.textStyle,
+    this.texts,
+    this.iconAndTextSpacing = 0,
   });
 
   @override
   Widget build(BuildContext context) {
     return BaseStepper(
-      children: _iconsWithSizeOverridden(),
+      completedSteps: completedTasks,
+      stepperAnimateInMiddle: stepperAnimateInMiddle,
+      stepCompetedColor: stepCompletedColor,
       nextPreviousButtonsDisabled: enableNextPreviousButtons,
       stepTappingDisabled: enableStepTapping,
       previousButtonIcon: previousButtonIcon,
@@ -126,6 +161,11 @@ class IconStepper extends StatelessWidget {
       scrollingDisabled: scrollingDisabled,
       activeStep: activeStep,
       alignment: alignment,
+      enableText: enableText,
+      textStyle: textStyle,
+      texts: texts,
+      iconAndTextSpacing: iconAndTextSpacing,
+      children: _iconsWithSizeOverridden(),
     );
   }
 

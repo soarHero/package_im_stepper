@@ -31,7 +31,15 @@ class BaseIndicator extends StatelessWidget {
   /// The amount of margin around each side of the indicator.
   final double margin;
 
-  BaseIndicator({
+  /// Color of this indicator when it is completed.
+  final Color? completedColor;
+
+  final bool? isStepCompleted;
+
+  const BaseIndicator({
+    super.key,
+    this.isStepCompleted,
+    this.completedColor,
     this.isSelected = false,
     this.child,
     this.onPressed,
@@ -47,14 +55,14 @@ class BaseIndicator extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: isSelected ? EdgeInsets.all(margin) : EdgeInsets.zero,
+      padding: EdgeInsets.all(margin),
       decoration: BoxDecoration(
-        border: isSelected
-            ? Border.all(
-                color: activeBorderColor ?? Colors.blue,
-                width: activeBorderWidth,
-              )
-            : null,
+        border: Border.all(
+          color: isSelected
+              ? (activeBorderColor ?? Colors.blue)
+              : Colors.transparent,
+          width: activeBorderWidth,
+        ),
         shape: BoxShape.circle,
       ),
       child: InkWell(
@@ -64,8 +72,11 @@ class BaseIndicator extends StatelessWidget {
           width: radius * 2,
           padding: EdgeInsets.all(padding),
           decoration: BoxDecoration(
-            color:
-                isSelected ? activeColor ?? Colors.green : color ?? Colors.grey,
+            color: isSelected
+                ? activeColor ?? Colors.green
+                : (isStepCompleted == true)
+                    ? completedColor ?? Colors.green
+                    : color ?? Colors.grey,
             shape: BoxShape.circle,
           ),
           child: Center(
